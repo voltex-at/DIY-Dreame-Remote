@@ -6,11 +6,14 @@ This file records actual results, not milestone promises.
   separation across fabrics, unknown battery versus a real 0%, route selection,
   unsupported/offline/stale-command rejection, timeout readback, no ACK-as-success,
   wrong-robot/stale observation rejection and removal blocking during a command.
-- Full native ASan/UBSan and ES3C35P build: results will be recorded after CI.
+- Native baseline: 63 assertions passed with UBSan locally and ASan/UBSan in
+  [CI run 38664676255](https://github.com/voltex-at/DIY-Dreame-Remote/actions/runs/38664676255).
+  Four additional checks cover renaming from an aliased existing name (67 total).
+  Final full-board and sanitizer results will be recorded after CI.
 - Local toolchain: g++ available; ESP-IDF/Xtensa toolchain absent, so full board
   compilation is performed by the pinned GitHub Actions container.
-- Local LeakSanitizer cannot inspect sandbox /proc; local execution may use
-  ASAN_OPTIONS=detect_leaks=0. CI must run without that override.
+- Local LeakSanitizer cannot inspect sandbox /proc; local validation uses
+  `python3 tools/test.py --ubsan`. CI runs full ASan/UBSan without overrides.
 - Hardware and real robot tests: not performed for this project.
 - No claimed firmware memory/RAM figure includes Matter; it is not linked yet.
 

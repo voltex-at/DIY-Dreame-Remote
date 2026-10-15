@@ -40,8 +40,10 @@ Result Registry::rename(Identity id, const char *name) {
     if (!valid_name(name)) return Result::Invalid;
     auto *robot = find(id);
     if (!robot) return Result::Missing;
-    robot->name.fill(0);
-    std::memcpy(robot->name.data(), name, std::strlen(name) + 1);
+    // The caller may pass a pointer into the existing name (including itself).
+    std::array<char, 49> replacement{};
+    std::memcpy(replacement.data(), name, std::strlen(name) + 1);
+    robot->name = replacement;
     return Result::Ok;
 }
 Result Registry::select(Identity id) {

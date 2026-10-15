@@ -27,6 +27,10 @@ int main() {
     CHECK(registry.select(one) == Result::Missing);
     CHECK(registry.rename(two, "Upstairs") == Result::Ok);
     CHECK(std::strcmp(registry.find(two)->name.data(), "Upstairs") == 0);
+    CHECK(registry.rename(two, registry.find(two)->name.data()) == Result::Ok);
+    CHECK(std::strcmp(registry.find(two)->name.data(), "Upstairs") == 0);
+    CHECK(registry.rename(two, registry.find(two)->name.data() + 2) == Result::Ok);
+    CHECK(std::strcmp(registry.find(two)->name.data(), "stairs") == 0);
     CHECK(registry.rename(two, "0123456789012345678901234567890123456789012345678") == Result::Invalid);
     CHECK(registry.rename(one, "Missing") == Result::Missing);
     CHECK(registry.remove(two) == Result::Ok && !registry.active());
